@@ -3,34 +3,51 @@ const examples = [
   "an unexpected fortunate discovery by chance",
   "someone who stays calm under pressure",
   "the ability to recover after difficulty",
+  "The sister of my mother",
 ];
 export default function App() {
   const [description, setDescription] = useState(""),
-    [mode, setMode] = useState("local"),
+    [mode, setMode] = useState("openai"),
     [result, setResult] = useState(null),
     [loading, setLoading] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [fallback, setFallback] = useState("");
+  async function requestSearch(searchMode) {
+    const response = await fetch("/api/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description, mode: searchMode, limit: 5 }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      const failure = new Error(typeof data.detail === "string" ? data.detail : "Please enter a valid description.");
+      failure.status = response.status;
+      throw failure;
+    }
+    return data;
+  }
   async function search(event) {
     event.preventDefault();
     setLoading(true);
     setError("");
+    setFallback("");
     setResult(null);
     try {
-      const r = await fetch("/api/search", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ description, mode, limit: 5 }),
-      });
-      const data = await r.json();
-      if (!r.ok)
-        throw new Error(
-          typeof data.detail === "string"
-            ? data.detail
-            : "Please enter a valid description.",
-        );
+      let data;
+      try {
+        data = await requestSearch(mode);
+      } catch (aiError) {
+        if (mode !== "openai" || (aiError.status && aiError.status < 500 && ![401,403,429].includes(aiError.status))) throw aiError;
+        try {
+          data = await requestSearch("local");
+          setFallback(`AI search is unavailable. Showing local catalog results. ${aiError.message}`);
+        } catch {
+          throw new Error(`AI search failed and local search is unavailable. ${aiError.message}`);
+        }
+      }
       setResult(data);
-    } catch (e) {
-      setError(e.message);
+    } catch (error) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -59,7 +76,7 @@ export default function App() {
               Search mode
               <select value={mode} onChange={(e) => setMode(e.target.value)}>
                 <option value="local">Local catalog</option>
-                <option value="openai">OpenAI reranking</option>
+                <option value="openai">AI word search</option>
               </select>
             </label>
             <button
@@ -85,6 +102,7 @@ export default function App() {
         </p>
       )}
       {loading && <p role="status">Searching…</p>}
+      {fallback && <p role="status" className="notice">{fallback}</p>}
       {result && (
         <section className="results">
           <div className="result-heading">
@@ -94,12 +112,12 @@ export default function App() {
                 : "No close match yet"}
             </h2>
             <span>
-              {result.mode === "local" ? "LOCAL CATALOG" : "OPENAI RERANKED"}
+              {result.mode === "local" ? "LOCAL CATALOG" : "AI SUGGESTIONS"}
             </span>
           </div>
           <p className="notice">{result.notice}</p>
           {!result.suggestions.length && (
-            <p>The small catalog has no matching terms. Try simpler wording.</p>
+            <p>{result.mode === "local" ? "The small catalog has no matching terms. Try AI word search." : "No established term was suggested. Try rephrasing your description."}</p>
           )}
           {result.suggestions.map((s, i) => (
             <article key={s.id}>
@@ -107,18 +125,16 @@ export default function App() {
               <div>
                 <h3>{s.word}</h3>
                 <p>{s.definition}</p>
-                <small>Matched terms: {s.matched_terms.join(", ")}</small>
+                <small>{s.source === "openai" ? "Suggested by AI" : `Matched terms: ${s.matched_terms.join(", ")}`}</small>
               </div>
             </article>
           ))}
         </section>
       )}
       <footer>
-        Portfolio demo · 40 curated words · local search works without an API
-        key.
+        Local search: 40 curated words. AI word search goes beyond the catalog.
         <br />
-        OpenAI mode requires server configuration. No query history is stored by
-        the application.
+        AI mode sends descriptions to OpenAI. The application does not save searches.
       </footer>
     </main>
   );

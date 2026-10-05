@@ -29,3 +29,8 @@ A replacement credential was accepted by OpenAI and installed in the loopback se
 The first search was verified through the React browser interface; the other two were verified through the running server API. All three used OpenAI mode. This is a small smoke check, not an independent evaluation of accuracy. The lexical catalog and retrieval limits still apply.
 
 ![Verified live OpenAI result](ai-working.png)
+
+
+## General AI search and automatic fallback
+
+The “sister of my mother” browser test exposed the original catalog boundary: it returned no match without making a model request. AI mode was revised to generate word/definition suggestions directly and is now the interface default. Provider failures trigger a clearly labeled local fallback. The backend suite passes 36 tests and the frontend suite passes six tests; the UI build passes. The out-of-catalog `aunt` regression and fallback behavior are verified with mocked-provider tests. Live browser verification of this revision is pending because preview access was declined.
