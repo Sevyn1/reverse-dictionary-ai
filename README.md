@@ -1,8 +1,10 @@
 # Reverse Dictionary AI
 
+[![Build and tests](https://github.com/Sevyn1/reverse-dictionary-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Sevyn1/reverse-dictionary-ai/actions/workflows/ci.yml)
+
 Describe a meaning and find candidate words. A Python/FastAPI API searches a small SQLite-backed vocabulary, and a React interface displays definitions and matched terms. Optional OpenAI mode reranks retrieved candidates, with strict validation that the model only references existing catalog IDs.
 
-Created with Codex assistance in October 2026. The older reverse-dictionary source mentioned in Favour Ojo's resumes could not be located during the audit. This repository is a new implementation of that idea, not evidence of when the earlier project was built.
+A Codex-assisted portfolio implementation created in October 2026, revisiting an earlier word-finder project idea. The original implementation was unavailable during the audit; this repository documents the current rebuild.
 
 ![Local search result](docs/preview.jpg)
 
@@ -65,6 +67,10 @@ Responses identify the mode and include suggestions with word, definition, score
 
 ## AI assistance and interview review
 
-Codex generated and verified the initial implementation at the owner's request. Review the code, trace a request, and make a meaningful change before presenting it as work you can explain. Do not claim sole manual authorship or historical course credit.
+Codex assisted with the implementation, tests, and verification. The source, setup instructions, and test boundaries make the work inspectable. This rebuild is separate from earlier coursework and project history.
 
 Explain the separation between retrieval and reranking, the scoring limitations, validation of candidate IDs, and which tests mock the provider. Useful next exercises are a larger vocabulary and an evaluation set of descriptions not copied from definitions. Embeddings and live-model quality remain future work, not completed claims.
+
+## Engineering decisions
+
+See [design decisions](docs/DESIGN_DECISIONS.md) for the implemented choices, tradeoffs, and test boundaries.
