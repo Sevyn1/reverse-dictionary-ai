@@ -42,9 +42,9 @@ Try “an unexpected fortunate discovery by chance” or “the ability to recov
 
 Set `OPENAI_API_KEY` in the **server environment**, then restart the API. `.env.example` documents names and is not loaded automatically. Never put credentials in React code or commit them. `OPENAI_MODEL` optionally selects a compatible model; the default is `gpt-4o-mini`.
 
-OpenAI mode sends the description and retrieved definitions to OpenAI and may incur charges. Missing configuration returns 503; provider failures return 502. It never silently disguises local fallback as an OpenAI result.
+OpenAI mode sends the description and retrieved definitions to OpenAI and may incur charges. Missing configuration or rejected credentials return 503; other provider failures return 502. It never silently disguises local fallback as an OpenAI result.
 
-**Live OpenAI execution was not verified in this audit.** Parsing, timeouts, and provider failures were tested with mocked HTTP. Local retrieval works without a key.
+**Live OpenAI reranking was verified on three public sample descriptions on 5 October 2026**, using `gpt-4o-mini`. The first suggestions were serendipity, equanimity and resilience. This smoke check does not establish general search accuracy. Automated provider tests still use mocked HTTP; local retrieval works without a key.
 
 ## Verification
 
@@ -55,7 +55,7 @@ npm test
 npm run build
 ```
 
-20 backend tests and 3 UI tests passed during creation, along with the UI build. Tests cover query limits, duplicate catalog initialization, deterministic results, missing keys, malformed model output, invalid IDs, quota errors, and timeouts. GitHub Actions runs these checks. See `docs/VERIFICATION.md` for the final recorded scope.
+24 backend tests and 3 UI tests pass, along with the UI build. Tests cover query limits, duplicate catalog initialization, deterministic results, missing keys, malformed model output, invalid IDs, quota errors, and timeouts. GitHub Actions runs these checks. See `docs/VERIFICATION.md` for the final recorded scope.
 
 ```sh
 curl -X POST http://127.0.0.1:8081/api/search \
@@ -69,7 +69,7 @@ Responses identify the mode and include suggestions with word, definition, score
 
 Codex assisted with the implementation, tests, and verification. The source, setup instructions, and test boundaries make the work inspectable. This rebuild is separate from earlier coursework and project history.
 
-Explain the separation between retrieval and reranking, the scoring limitations, validation of candidate IDs, and which tests mock the provider. Useful next exercises are a larger vocabulary and an evaluation set of descriptions not copied from definitions. Embeddings and live-model quality remain future work, not completed claims.
+Explain the separation between retrieval and reranking, the scoring limitations, validation of candidate IDs, and which tests mock the provider. Useful next exercises are a larger vocabulary and an evaluation set of descriptions not copied from definitions. Embeddings and a broad held-out quality evaluation remain future work, not completed claims.
 
 ## Engineering decisions
 
@@ -78,4 +78,4 @@ See [design decisions](docs/DESIGN_DECISIONS.md) for the implemented choices, tr
 
 ### AI connection troubleshooting
 
-A configured environment variable does not establish that the key is valid. Rejected credentials, project/model permission failures, API quota and rate limits are reported separately. Provider messages are withheld because they can contain credential fragments. A valid active API credential is required for live OpenAI reranking; no successful live-provider check is currently claimed.
+A configured environment variable does not establish that the key is valid. Rejected credentials, project/model permission failures, API quota and rate limits are reported separately. Provider messages are withheld because they can contain credential fragments. A valid active API credential is required for live OpenAI reranking. Three live sample searches passed with a replacement credential on 5 October 2026; credentials are not included in the repository.
