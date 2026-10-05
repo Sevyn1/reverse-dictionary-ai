@@ -70,6 +70,20 @@ async def rerank(description, candidates, limit):
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             res = await client.post('https://api.openai.com/v1/chat/completions', headers={'Authorization': 'Bearer ' + key}, json={'model': os.environ.get('OPENAI_MODEL', 'gpt-4o-mini'), 'messages': messages, 'temperature': 0, 'max_tokens': 150, 'response_format': {'type': 'json_object'}})
+        # Provider messages may contain credential fragments; never return them.
+        if res.status_code == 401:
+            raise HTTPException(503, 'OpenAI rejected the API key configured on this server. Replace it with a valid key.')
+        if res.status_code == 403:
+            raise HTTPException(502, 'The OpenAI project does not permit this request. Check its model permissions.')
+        if res.status_code == 429:
+            try:
+                error = res.json().get('error', {})
+                quota = isinstance(error, dict) and error.get('code') == 'insufficient_quota'
+            except (ValueError, AttributeError):
+                quota = False
+            if quota:
+                raise HTTPException(502, 'The OpenAI account has insufficient API quota. Check API billing and project limits.')
+            raise HTTPException(502, 'OpenAI is rate-limiting requests. Wait briefly and try again.')
         res.raise_for_status()
         raw = res.json()['choices'][0]['message']['content']
         ids = json.loads(raw)['ranked_ids']

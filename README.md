@@ -74,3 +74,8 @@ Explain the separation between retrieval and reranking, the scoring limitations,
 ## Engineering decisions
 
 See [design decisions](docs/DESIGN_DECISIONS.md) for the implemented choices, tradeoffs, and test boundaries.
+
+
+### AI connection troubleshooting
+
+A configured environment variable does not establish that the key is valid. Rejected credentials, project/model permission failures, API quota and rate limits are reported separately. Provider messages are withheld because they can contain credential fragments. A valid active API credential is required for live OpenAI reranking; no successful live-provider check is currently claimed.

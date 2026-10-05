@@ -63,3 +63,19 @@ def test_provider_errors(client, monkeypatch, failure):
         return httpx.Response(429, json={'error': 'quota'}, request=httpx.Request('POST', url))
     monkeypatch.setattr(httpx.AsyncClient, 'post', post)
     assert client.post('/api/search', json={'description': 'fortunate discovery', 'mode': 'openai'}).status_code == 502
+
+@pytest.mark.parametrize('status,code,expected_status,fragment', [
+    (401, 'invalid_api_key', 503, 'rejected the API key'),
+    (403, 'permission_denied', 502, 'does not permit'),
+    (429, 'insufficient_quota', 502, 'insufficient API quota'),
+    (429, 'rate_limit_exceeded', 502, 'rate-limiting'),
+])
+def test_provider_failures_are_actionable_without_exposing_secrets(client, monkeypatch, status, code, expected_status, fragment):
+    monkeypatch.setenv('OPENAI_API_KEY', 'test-only-placeholder')
+    async def post(self, url, **kwargs):
+        return httpx.Response(status, json={'error': {'code': code, 'message': 'SENSITIVE-PROVIDER-MESSAGE'}}, request=httpx.Request('POST', url))
+    monkeypatch.setattr(httpx.AsyncClient, 'post', post)
+    response = client.post('/api/search', json={'description': 'fortunate discovery', 'mode': 'openai'})
+    assert response.status_code == expected_status
+    assert fragment in response.json()['detail']
+    assert 'SENSITIVE-PROVIDER-MESSAGE' not in response.text
