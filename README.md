@@ -4,7 +4,7 @@
 
 Describe a meaning and find candidate words. A Python/FastAPI API searches a small SQLite-backed vocabulary, and a React interface displays definitions and matched terms. Optional OpenAI mode reranks retrieved candidates, with strict validation that the model only references existing catalog IDs.
 
-A Codex-assisted portfolio implementation created in October 2026, revisiting an earlier word-finder project idea. The original implementation was unavailable during the audit; this repository documents the current rebuild.
+A Codex-assisted modern rebuild published in October 2026. The original Flask/OpenAI prototype and unfinished Spring scaffolding were subsequently recovered from the iCloud archive. This repository documents the current FastAPI/React implementation; see [project history](docs/PROJECT_HISTORY.md).
 
 ![Local search result](docs/preview.jpg)
 
