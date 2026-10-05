@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "word": "serendipity",
+    "definition": "A fortunate discovery made by chance",
+    "keywords": "unexpected lucky accidental fortunate discovery"
+  },
+  {
+    "id": 2,
+    "word": "nostalgia",
+    "definition": "A longing for a remembered past",
+    "keywords": "past childhood memories longing sentimental"
+  },
+  {
+    "id": 3,
+    "word": "resilience",
+    "definition": "The ability to recover after difficulty",
+    "keywords": "recover bounce back adversity strength difficult"
+  },
+  {
+    "id": 4,
+    "word": "empathy",
+    "definition": "Understanding another person’s feelings",
+    "keywords": "understand feelings another person emotional"
+  },
+  {
+    "id": 5,
+    "word": "ambivalence",
+    "definition": "Having mixed or conflicting feelings",
+    "keywords": "mixed feelings uncertainty conflict undecided"
+  },
+  {
+    "id": 6,
+    "word": "ephemeral",
+    "definition": "Lasting for a very short time",
+    "keywords": "temporary short fleeting brief lasts"
+  },
+  {
+    "id": 7,
+    "word": "eloquent",
+    "definition": "Expressing ideas clearly and persuasively",
+    "keywords": "speaking articulate expressive persuasive clear"
+  },
+  {
+    "id": 8,
+    "word": "meticulous",
+    "definition": "Showing great attention to small details",
+    "keywords": "careful precise detail thorough attention"
+  },
+  {
+    "id": 9,
+    "word": "pragmatic",
+    "definition": "Focused on practical solutions",
+    "keywords": "practical realistic useful problem solution"
+  },
+  {
+    "id": 10,
+    "word": "ubiquitous",
+    "definition": "Present or found everywhere",
+    "keywords": "everywhere widespread present common"
+  },
+  {
+    "id": 11,
+    "word": "tenacious",
+    "definition": "Persisting firmly despite difficulty",
+    "keywords": "persistent determined refuses quit stubborn"
+  },
+  {
+    "id": 12,
+    "word": "altruism",
+    "definition": "Concern for the welfare of others without personal gain",
+    "keywords": "selfless help others generosity giving"
+  },
+  {
+    "id": 13,
+    "word": "procrastination",
+    "definition": "Delaying a task that needs to be done",
+    "keywords": "delay postpone tasks putting off work"
+  },
+  {
+    "id": 14,
+    "word": "catharsis",
+    "definition": "An emotional release that brings relief",
+    "keywords": "emotional release relief crying feelings"
+  },
+  {
+    "id": 15,
+    "word": "sonder",
+    "definition": "Awareness that other people have complex lives of their own",
+    "keywords": "strangers people complex lives awareness"
+  },
+  {
+    "id": 16,
+    "word": "melancholy",
+    "definition": "A quiet or reflective sadness",
+    "keywords": "sadness quiet reflective sorrow feeling"
+  },
+  {
+    "id": 17,
+    "word": "equanimity",
+    "definition": "Calmness under pressure",
+    "keywords": "calm composed pressure stress balance"
+  },
+  {
+    "id": 18,
+    "word": "paradox",
+    "definition": "A statement or situation that seems contradictory",
+    "keywords": "contradiction conflicting seemingly impossible logic"
+  },
+  {
+    "id": 19,
+    "word": "synergy",
+    "definition": "A combined effect greater than individual contributions",
+    "keywords": "together collaboration combined greater team"
+  },
+  {
+    "id": 20,
+    "word": "diligence",
+    "definition": "Careful and sustained effort",
+    "keywords": "careful work sustained effort hardworking"
+  },
+  {
+    "id": 21,
+    "word": "integrity",
+    "definition": "Consistency with honest ethical principles",
+    "keywords": "honest ethics principles trustworthy moral"
+  },
+  {
+    "id": 22,
+    "word": "curiosity",
+    "definition": "A desire to learn or understand",
+    "keywords": "learn questions understand explore desire"
+  },
+  {
+    "id": 23,
+    "word": "adaptability",
+    "definition": "Ability to adjust to changing conditions",
+    "keywords": "adjust change flexibility conditions adapt"
+  },
+  {
+    "id": 24,
+    "word": "intuition",
+    "definition": "Understanding without deliberate reasoning",
+    "keywords": "instinct gut feeling understanding reasoning"
+  },
+  {
+    "id": 25,
+    "word": "ambiguity",
+    "definition": "Having more than one possible meaning",
+    "keywords": "unclear multiple meanings interpretation vague"
+  },
+  {
+    "id": 26,
+    "word": "brevity",
+    "definition": "Shortness of expression or duration",
+    "keywords": "short concise few words expression"
+  },
+  {
+    "id": 27,
+    "word": "reciprocity",
+    "definition": "Mutual exchange between people",
+    "keywords": "mutual exchange return favour giving"
+  },
+  {
+    "id": 28,
+    "word": "idempotent",
+    "definition": "Producing the same result when repeated",
+    "keywords": "repeat same result operation safe duplicate"
+  },
+  {
+    "id": 29,
+    "word": "concurrency",
+    "definition": "Progress of multiple tasks during overlapping periods",
+    "keywords": "simultaneous tasks overlapping processes parallel"
+  },
+  {
+    "id": 30,
+    "word": "latency",
+    "definition": "Delay between a request and its response",
+    "keywords": "delay request response time waiting"
+  },
+  {
+    "id": 31,
+    "word": "reconciliation",
+    "definition": "Making separate records agree",
+    "keywords": "records matching accounts reconcile compare agreement"
+  },
+  {
+    "id": 32,
+    "word": "observability",
+    "definition": "Understanding internal behavior from external signals",
+    "keywords": "logs metrics traces system understand signals"
+  },
+  {
+    "id": 33,
+    "word": "abstraction",
+    "definition": "Hiding details to focus on essential behavior",
+    "keywords": "hide details essential simplify interface"
+  },
+  {
+    "id": 34,
+    "word": "encapsulation",
+    "definition": "Keeping state and behavior behind a defined interface",
+    "keywords": "state behavior private data interface hide"
+  },
+  {
+    "id": 35,
+    "word": "inquisitive",
+    "definition": "Eager to ask questions and learn",
+    "keywords": "questions curious learn eager"
+  },
+  {
+    "id": 36,
+    "word": "frugal",
+    "definition": "Careful about spending resources",
+    "keywords": "save spending money careful economical"
+  },
+  {
+    "id": 37,
+    "word": "audacious",
+    "definition": "Willing to take bold risks",
+    "keywords": "bold daring risk brave"
+  },
+  {
+    "id": 38,
+    "word": "tranquil",
+    "definition": "Free from disturbance or agitation",
+    "keywords": "peaceful calm quiet still"
+  },
+  {
+    "id": 39,
+    "word": "bittersweet",
+    "definition": "Combining pleasant and painful feelings",
+    "keywords": "happy sad pleasant painful mixed emotion"
+  },
+  {
+    "id": 40,
+    "word": "ineffable",
+    "definition": "Difficult to express in words",
+    "keywords": "cannot describe words express feeling"
+  }
+]

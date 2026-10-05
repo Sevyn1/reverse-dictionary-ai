@@ -1,0 +1,65 @@
+import json
+import httpx, pytest
+from fastapi.testclient import TestClient
+from backend.main import create_app
+
+@pytest.fixture
+def client(tmp_path, monkeypatch):
+    monkeypatch.delenv('OPENAI_API_KEY', raising=False)
+    return TestClient(create_app(tmp_path / 'test.sqlite'))
+
+def test_fortunate_discovery(client):
+    r = client.post('/api/search', json={'description': 'an unexpected fortunate discovery by chance'})
+    assert r.status_code == 200
+    assert r.json()['suggestions'][0]['word'] == 'serendipity'
+    assert r.json()['mode'] == 'local'
+
+def test_no_match_is_empty_not_invented(client):
+    assert client.post('/api/search', json={'description': 'zzzzzzzz'}).json()['suggestions'] == []
+
+@pytest.mark.parametrize('payload', [{'description': ' '}, {'description': 'a' * 301}, {'description': 'hello', 'limit': 6}, {'description': 'hello', 'limit': 0}, {'description': 'hello', 'mode': 'fake'}, {'description': 'hello', 'unknown': True}])
+def test_invalid_requests(client, payload):
+    assert client.post('/api/search', json=payload).status_code == 422
+
+def test_missing_provider(client):
+    assert client.post('/api/search', json={'description': 'fortunate discovery', 'mode': 'openai'}).status_code == 503
+
+def test_stable_limit(client):
+    query = {'description': 'calm quiet peaceful', 'limit': 2}
+    a = client.post('/api/search', json=query).json()
+    b = client.post('/api/search', json=query).json()
+    assert a == b
+    assert len(a['suggestions']) <= 2
+
+def test_reranks_only_existing_ids(client, monkeypatch):
+    monkeypatch.setenv('OPENAI_API_KEY', 'test-only-placeholder')
+
+    async def post(self, url, **kwargs):
+        candidates = json.loads(kwargs['json']['messages'][1]['content'])['candidates']
+        ids = [c['id'] for c in reversed(candidates)]
+        return httpx.Response(200, json={'choices': [{'message': {'content': json.dumps({'ranked_ids': ids})}}]}, request=httpx.Request('POST', url))
+    monkeypatch.setattr(httpx.AsyncClient, 'post', post)
+    r = client.post('/api/search', json={'description': 'calm quiet peaceful', 'mode': 'openai', 'limit': 2})
+    assert r.status_code == 200
+    assert r.json()['mode'] == 'openai'
+    assert len(r.json()['suggestions']) == 2
+
+@pytest.mark.parametrize('content', ['not JSON', '{"ranked_ids":[99999]}', '{"ranked_ids":[1,1]}', '{"ranked_ids":[true]}', '{"ranked_ids":[]}'])
+def test_bad_model_output(client, monkeypatch, content):
+    monkeypatch.setenv('OPENAI_API_KEY', 'test-only-placeholder')
+
+    async def post(self, url, **kwargs):
+        return httpx.Response(200, json={'choices': [{'message': {'content': content}}]}, request=httpx.Request('POST', url))
+    monkeypatch.setattr(httpx.AsyncClient, 'post', post)
+    assert client.post('/api/search', json={'description': 'fortunate discovery', 'mode': 'openai'}).status_code == 502
+
+@pytest.mark.parametrize('failure', ['timeout', 'quota'])
+def test_provider_errors(client, monkeypatch, failure):
+    monkeypatch.setenv('OPENAI_API_KEY', 'test-only-placeholder')
+
+    async def post(self, url, **kwargs):
+        if failure == 'timeout':
+            raise httpx.ReadTimeout('timeout')
+        return httpx.Response(429, json={'error': 'quota'}, request=httpx.Request('POST', url))
+    monkeypatch.setattr(httpx.AsyncClient, 'post', post)
+    assert client.post('/api/search', json={'description': 'fortunate discovery', 'mode': 'openai'}).status_code == 502
