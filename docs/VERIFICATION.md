@@ -7,3 +7,5 @@
 - Real OpenAI calls, model quality, deployment, large-vocabulary performance, and embedding search are not verified or claimed.
 
 The original project's source was unavailable in the inspected repositories and local locations. This is a new portfolio implementation with explicitly documented AI assistance.
+
+Final browser checks verified description-to-word search, the missing-key error for OpenAI mode, and responsive layouts. Hosted CI passed: https://github.com/Sevyn1/reverse-dictionary-ai/actions/runs/37262488172.

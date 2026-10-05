@@ -4,6 +4,8 @@ Describe a meaning and find candidate words. A Python/FastAPI API searches a sma
 
 Created with Codex assistance in October 2026. The older reverse-dictionary source mentioned in Favour Ojo's resumes could not be located during the audit. This repository is a new implementation of that idea, not evidence of when the earlier project was built.
 
+![Local search result](docs/preview.jpg)
+
 ## Implementation
 
 - Local description-to-word retrieval over 40 original curated entries, with repeatable ranking and matched-term explanations.
